@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Contact.css';
 import msg_icon from '../../assets/msg-icon.png';
 import mail_icon from '../../assets/mail-icon.png';
@@ -9,6 +9,27 @@ import white_arrow from '../../assets/white-arrow.png';
 const Contact = () => {
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
+  const contactRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    const elements = contactRef.current.querySelectorAll('.scroll-reveal');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
   const onSubmit = async (event) => {
     event.preventDefault();
@@ -17,7 +38,7 @@ const Contact = () => {
 
     try {
       const formData = new FormData(event.target);
-      formData.append("access_key", "YOUR_ACCESS_KEY_HERE"); // Replace this with your Web3Forms access key
+      formData.append("access_key", "YOUR_ACCESS_KEY_HERE");
 
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
@@ -25,7 +46,6 @@ const Contact = () => {
       });
 
       const data = await response.json();
-      console.log("Web3Forms response:", data); // Useful for debugging
 
       if (data.success) {
         setResult("Message sent successfully ✅");
@@ -42,61 +62,77 @@ const Contact = () => {
   };
 
   return (
-    <div className='contact'>
-      {/* Left Column */}
-      <div className="contact-col">
+    <div className="contact" id="contact" ref={contactRef}>
+      
+      {/* Left Column - Info Card */}
+      <div className="contact-col info-card scroll-reveal delay-1">
+        <div className="info-bg-shape"></div>
         <h3>
           Send us a message <img src={msg_icon} alt="Message Icon" />
         </h3>
         <p>
           Feel free to reach out through the contact form or find our contact
-          information below.
+          information below. Your feedback, questions, and suggestions are
+          important to us.
         </p>
         <ul>
-          <li><img src={mail_icon} alt="Mail" /> knnadjib@gmail.com</li>
-          <li><img src={phone_icon} alt="Phone" /> +213 34567894567</li>
           <li>
-            <img src={location_icon} alt="Location" />
+            <div className="icon-circle">
+              <img src={mail_icon} alt="Mail" />
+            </div>
+            knnadjib@gmail.com
+          </li>
+          <li>
+            <div className="icon-circle">
+              <img src={phone_icon} alt="Phone" />
+            </div>
+            +213 34567894567
+          </li>
+          <li>
+            <div className="icon-circle">
+              <img src={location_icon} alt="Location" />
+            </div>
             77 Massachusetts Ave, Cambridge MA 02139
           </li>
         </ul>
       </div>
 
       {/* Right Column - Form */}
-      <div className="contact-col">
+      <div className="contact-col form-wrapper scroll-reveal delay-2">
         <form onSubmit={onSubmit}>
-          <label>Your Name</label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter your name"
-            required
-          />
+          <div className="input-group">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="Enter your name" required />
+          </div>
 
-          <label>Phone Number</label>
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Enter your mobile number"
-            required
-          />
+          <div className="input-group">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="Enter your email address" required />
+          </div>
 
-          <label>Write your message here</label>
-          <textarea
-            name="message"
-            rows="6"
-            placeholder="Enter your message"
-            required
-          ></textarea>
+          <div className="input-group">
+            <label>Phone Number</label>
+            <input type="tel" name="phone" placeholder="Enter your mobile number" required />
+          </div>
 
-          <button type="submit" className="btn dark-btn" disabled={loading}>
+          <div className="input-group">
+            <label>Write your message here</label>
+            <textarea name="message" rows="5" placeholder="Enter your message" required></textarea>
+          </div>
+
+          <button type="submit" className="btn dark-btn submit-btn" disabled={loading}>
             {loading ? "Sending..." : "Submit now"} <img src={white_arrow} alt="Arrow" />
           </button>
         </form>
 
         {/* Result Message */}
-        {result && <p className="form-result">{result}</p>}
+        {result && (
+          <div className={`form-result ${result.includes('Error') ? 'error' : 'success'}`}>
+            {result}
+          </div>
+        )}
       </div>
+
     </div>
   );
 };

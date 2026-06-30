@@ -1,40 +1,78 @@
 import React, { useEffect, useState } from 'react';
-import "./Navbar.css";
-import logo from "../../assets/logo.png";
+import './Navbar.css';
+import logo from '../../assets/logo.png';
 import { Link } from 'react-scroll';
-import menu_icon from "../../assets/menu-icon.png";
+
 const Navbar = () => {
-  const [Sticky, setSticky] = useState(false);
+  const [sticky, setSticky] = useState(false);
+  const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setSticky(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  const[mobileMenu, setmobileMenu] = useState(false)
-  const toggleMenu = ()=>{
-    mobileMenu ? setmobileMenu(false) : setmobileMenu(true);
-  }
+
+  const toggleMenu = () => {
+    setMobileMenu(!mobileMenu);
+  };
+
+  const closeMobile = () => {
+    setMobileMenu(false);
+  };
 
   return (
-    <nav className={`container ${Sticky ? 'dark-nav' : ''}`}>
-      <img src={logo} alt="Logo" className='logo' />
-      <ul className={mobileMenu? '' : 'hide-mobile-menu'}>
-        <li><Link to='hero' smooth={true} offset={0} duration={500}>Home</Link></li>
-        <li><Link to='programs' smooth={true} offset={-260} duration={500}>Program</Link></li>
-        <li><Link to='about' smooth={true} offset={-150} duration={500}>About Us</Link></li>
-        <li><Link to='campus' smooth={true} offset={-260} duration={500}>Campus</Link></li>
-        <li><Link to='testimonials' smooth={true} offset={-260} duration={500}>Testimonials</Link></li>
-        <li><Link className='btn' to='contact' smooth={true} offset={-260} duration={500}>Contact us</Link></li>
-      </ul>
-      <img src={menu_icon} alt="" className='menu-icon' onClick={toggleMenu}/>
-    </nav>
+    <>
+      <nav className={`navbar container ${sticky ? 'scrolled' : ''}`}>
+        <img src={logo} alt="Edusity Logo" className="logo" />
+        <ul className={`nav-links ${mobileMenu ? 'active' : ''}`}>
+          <li style={{ '--i': 1 }}>
+            <Link to="hero" spy={true} activeClass="active-link" smooth={true} offset={0} duration={400} onClick={closeMobile}>
+              Home
+            </Link>
+          </li>
+          <li style={{ '--i': 2 }}>
+            <Link to="program" spy={true} activeClass="active-link" smooth={true} offset={-100} duration={400} onClick={closeMobile}>
+              Programs
+            </Link>
+          </li>
+          <li style={{ '--i': 3 }}>
+            <Link to="about" spy={true} activeClass="active-link" smooth={true} offset={-100} duration={400} onClick={closeMobile}>
+              About Us
+            </Link>
+          </li>
+          <li style={{ '--i': 4 }}>
+            <Link to="campus" spy={true} activeClass="active-link" smooth={true} offset={-100} duration={400} onClick={closeMobile}>
+              Campus
+            </Link>
+          </li>
+          <li style={{ '--i': 5 }}>
+            <Link to="testimonials" spy={true} activeClass="active-link" smooth={true} offset={-100} duration={400} onClick={closeMobile}>
+              Testimonials
+            </Link>
+          </li>
+          <li style={{ '--i': 6 }}>
+            <Link className="btn contact-btn" to="contact" spy={true} smooth={true} offset={-100} duration={400} onClick={closeMobile}>
+              Contact us
+            </Link>
+          </li>
+        </ul>
+        
+        {/* Hamburger Menu Icon */}
+        <div className={`hamburger ${mobileMenu ? 'active' : ''}`} onClick={toggleMenu}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </nav>
+
+      {/* Mobile Menu Backdrop */}
+      <div className={`mobile-overlay ${mobileMenu ? 'active' : ''}`} onClick={closeMobile}></div>
+    </>
   );
 };
 

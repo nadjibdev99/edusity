@@ -1,56 +1,173 @@
-.about{
-    margin: 100px auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+/* About.css - Premium Redesign */
+
+.about {
+  margin: 120px auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 60px;
+  position: relative;
+}
+
+/* Decorative background blob */
+.about::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5%;
+  width: 400px;
+  height: 400px;
+  background: var(--primary-glow);
+  filter: blur(100px);
+  z-index: -1;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  opacity: 0.5;
+}
+
+.about-left {
+  flex-basis: 45%;
+  position: relative;
+}
+
+/* Decorative border frame */
+.about-left::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--primary-light);
+  border-radius: var(--radius-lg);
+  z-index: 0;
+  transition: transform var(--transition-base);
+}
+
+.about-left:hover::before {
+  transform: translate(10px, 10px);
+}
+
+.about-img-wrapper {
+  position: relative;
+  z-index: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+}
+
+.about-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.8s var(--ease-out-expo);
+}
+
+.about-left:hover .about-img {
+  transform: scale(1.05);
+}
+
+/* Pulsing Play Button */
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 64px;
+  height: 64px;
+  background: var(--surface-card);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  z-index: 5;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.play-button svg {
+  margin-left: 4px; /* visually center the triangle */
+}
+
+.play-button::before,
+.play-button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid var(--surface-card);
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+.play-button::after {
+  animation-delay: 1s;
+}
+
+.play-button:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  color: var(--primary-dark);
+}
+
+/* Right Content */
+.about-right {
+  flex-basis: 50%;
+}
+
+.about-right h3 {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--primary);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.about-right h2 {
+  font-size: 38px;
+  color: var(--dark-900);
+  margin-bottom: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.about-right p {
+  color: var(--dark-600);
+  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* Scroll Reveal specific to About */
+.about-left.scroll-reveal {
+  transform: translateX(-40px);
+}
+.about-right .scroll-reveal {
+  transform: translateX(40px);
+}
+.about-left.revealed,
+.about-right .revealed {
+  transform: translateX(0);
+}
+
+@media (max-width: 900px) {
+  .about {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .about-left {
+    flex-basis: 100%;
     width: 90%;
-}
-.about-left{
-    flex-basis: 40%;
-    position: relative;
-}
-.about-right{
-    flex-basis: 56%;
-}
-.about-img{
-    width: 100%;
-    border-radius: 10px;
-}
-.play-icon{
-    width: 60px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-}
-.about h3{
-    font-weight: 600;
-    font-size: 16px;
-    color: #212EA0;
-}
-.about h2{
-    font-size: 35px;
-    color: #000f38;
-    margin: 10px 0;
-    max-width: 400px;
-}
-.about p{
-    color: #676767;
-    margin-bottom: 15px;
-}
-
-
-@media (max-width: 800px){
-    .about{
-        flex-direction: column;
-    }
-    .about-left{
-        flex-basis: 100%;
-        margin: 20px;
-        order: 2;
-    }
-    .about-right{
-        flex-basis: 100%;
-    }
+    margin: 0 auto;
+  }
+  .about-right {
+    flex-basis: 100%;
+    text-align: center;
+  }
+  .about-left.scroll-reveal,
+  .about-right .scroll-reveal {
+    transform: translateY(30px); /* Switch to vertical reveal on mobile */
+  }
 }

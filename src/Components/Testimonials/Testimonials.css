@@ -1,90 +1,207 @@
-.testimonials{
-    margin: 80px auto;
-    padding: 0 80px;
-    position: relative;
-}
-.next-btn, .back-btn{
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    padding: 15px;
-    width: 50px;
-    border-radius: 50%;
-    cursor: pointer;
-    background: #212EA0;
-}
-.back-btn{
-    right: auto;
-    left: 0;
-}
-.slider{
-    overflow: hidden;
-}
-.slider ul{
-    display: flex;
-    width: 200%;
-    overflow-y: hidden;
-    transition: 0.5s;
-    transform: translateX();
-}
-.slider ul li{
-    list-style: none;
-    width: 50%;
-    padding: 20px;
-}
-.slide{
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-    padding: 40px;
-    border-radius: 10px;
-    color: #676767;
-    line-height: 1.4;
-}
-.slide img{
-    width: 65px;
-    border-radius: 50%;
-    margin-right: 10px;
-    border: 4px solid #212EA0;
-}
-.user-info{
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    font-size: 15px;
-}
-.user-info h3{
-    color: #212EA0;
+/* Testimonials.css - Premium Redesign */
+
+.testimonials {
+  margin: 40px auto 80px;
+  padding: 0 80px;
+  position: relative;
+  max-width: 1200px;
 }
 
-@media (max-width: 800px){
-    .testimonials{
-        padding: 0 40px;
-    }
-    .next-btn, .back-btn{
-        padding: 10px;
-        width: 35px;
-    }
-    .testimonials ul li{
-        padding: 10px;
-    }
-    .slide{
-        padding: 10px;
-    }
-    .slide img{
-        width: 50px;
-        border: 3px solid #212EA0;
-    }
+/* Slider Track */
+.slider {
+  overflow: hidden;
+  padding: 20px 0; /* Space for shadow */
 }
-@media (max-width: 600px){
-    .user-info{ 
-        display: block;
-        margin-bottom: 10px;
-        font-size: 12px;
-    }
-    .user-info h3{
-        font-size: 16px;
-    }
-    .slider p{
-        font-size: 12px;
-    }
+
+.slider ul {
+  display: flex;
+  width: 200%; /* 4 slides, 2 visible = 200% width */
+  transition: transform 0.6s var(--ease-out-expo);
+  list-style: none;
+}
+
+.slider ul li {
+  width: 50%;
+  padding: 0 20px;
+}
+
+/* Glass Card */
+.slide-card {
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--dark-100);
+  position: relative;
+  height: 100%;
+  transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
+  overflow: hidden;
+}
+
+.slide-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Large Decorative Quotation Mark */
+.slide-card::before {
+  content: '"';
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-family: var(--font-heading);
+  font-size: 140px;
+  line-height: 1;
+  color: var(--primary);
+  opacity: 0.05;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* User Info */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.avatar-wrapper {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  padding: 3px; /* Creates the gradient border */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-wrapper img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--surface-card);
+}
+
+.user-info h3 {
+  font-size: 18px;
+  color: var(--dark-900);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.user-info span {
+  font-size: 14px;
+  color: var(--dark-500);
+  font-weight: 500;
+}
+
+/* Stars */
+.star-rating {
+  color: var(--accent-amber);
+  font-size: 18px;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+/* Review Text */
+.slide-card p {
+  color: var(--dark-600);
+  font-size: 16px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  z-index: 10;
+  transition: all var(--transition-fast);
+}
+
+.nav-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nav-btn:not(.disabled):hover {
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: var(--shadow-glow);
+}
+
+.next-btn { right: 0; }
+.back-btn { left: 0; }
+
+/* CSS Arrows */
+.arrow-left, .arrow-right {
+  width: 12px;
+  height: 12px;
+  border-top: 3px solid #fff;
+  border-right: 3px solid #fff;
+}
+
+.arrow-right { transform: rotate(45deg); margin-right: 5px; }
+.arrow-left { transform: rotate(-135deg); margin-left: 5px; }
+
+/* Dots */
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--dark-300);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.dot.active {
+  width: 25px;
+  border-radius: var(--radius-full);
+  background: var(--primary);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .testimonials {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* On mobile, we still use 200% width but cards take up more space. 
+     A proper mobile slider would need JS adjustments, but CSS can handle the layout. */
+  .slider ul {
+    width: 400%; /* 4 slides, 1 visible */
+  }
+  .slider ul li {
+    width: 25%;
+    padding: 0 10px;
+  }
+  .slide-card {
+    padding: 25px;
+  }
+  .avatar-wrapper {
+    width: 55px;
+    height: 55px;
+  }
 }
